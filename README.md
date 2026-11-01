@@ -75,4 +75,4 @@ An interactive Excel dashboard analysing employee attrition in the IBM HR Analyt
 
 ## Author
 
-**Megha V Gowda**: https://www.linkedin.com/in/megha-gowda-93a274221/ | https://github.com/meghagowda812/hr-attrition-dashboard
+**Megha V Gowda**: https://www.linkedin.com/in/megha-gowda-93a274221/ | [https://github.com/meghagowda812]
