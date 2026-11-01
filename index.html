@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR Attrition Dashboard | Megha V Gowda</title>
+<meta name="description" content="Excel dashboard analysing employee attrition for 1,470 employees in the IBM HR Analytics dataset.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1b2438; --muted:#55607a; --paper:#f6f7fb; --card:#ffffff;
+  --navy:#1f3864; --violet:#8a1fa6; --lilac:#d9b3e6; --line:#dfe3ee;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.65 "IBM Plex Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--navy)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--violet);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+header.top{background:var(--navy);color:#fff}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:16px;padding-bottom:16px;gap:16px;flex-wrap:wrap}
+header.top strong{font-weight:600}
+header.top nav a{color:#fff;margin-left:20px;text-decoration:none;opacity:.9}
+header.top nav a:hover{text-decoration:underline;opacity:1}
+
+.hero{padding:72px 0 56px}
+.hero h1{font:600 clamp(34px,5.2vw,56px)/1.1 "IBM Plex Serif",Georgia,serif;margin:0 0 20px;max-width:16em;letter-spacing:-.01em}
+.hero p.lead{font-size:20px;color:var(--muted);max-width:36em;margin:0 0 36px}
+.compare{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:28px;max-width:640px}
+.compare h2{font-size:16px;font-weight:600;margin:0 0 18px;color:var(--muted)}
+.row{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;margin-bottom:14px}
+.row:last-child{margin-bottom:0}
+.bar{height:34px;border-radius:4px;display:flex;align-items:center;padding-left:12px;color:#fff;font-weight:600;white-space:nowrap}
+.bar.no{width:34%;background:var(--lilac);color:var(--ink)}
+.bar.yes{width:100%;background:var(--violet)}
+.meta{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:32px;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink);font-weight:600}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-block;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:600}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:#17294b}
+.btn.ghost{border:1.5px solid var(--navy);color:var(--navy)}
+.btn.ghost:hover{background:#e8edf7}
+
+section{padding:44px 0;border-top:1px solid var(--line)}
+section h2{font:600 28px/1.25 "IBM Plex Serif",Georgia,serif;margin:0 0 16px}
+.shot{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.shot img{width:100%;height:auto;display:block;border-radius:6px}
+.shot a{display:block}
+figcaption{font-size:14px;color:var(--muted);margin-top:10px;padding:0 6px 4px}
+figure{margin:0}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.prose{max-width:42em}
+.findings{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.findings th,.findings td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+.findings tr:last-child td,.findings tr:last-child th{border-bottom:0}
+.findings th{font-weight:600;width:30%;background:#fbfbfe}
+.findings .n{font-weight:700;color:var(--violet)}
+ol.recs{padding-left:22px;margin:0}
+ol.recs li{margin-bottom:14px;padding-left:6px}
+ol.recs strong{font-weight:600}
+.note{background:#eef1f9;border-left:4px solid var(--navy);padding:16px 20px;border-radius:0 8px 8px 0;max-width:42em}
+.tags{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.tags li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:15px}
+footer{background:var(--navy);color:#fff;padding:36px 0;margin-top:20px}
+footer a{color:#fff}
+@media (max-width:760px){
+  .two{grid-template-columns:1fr;gap:28px}
+  .row{grid-template-columns:1fr;gap:6px}
+  .hero{padding-top:48px}
+  .findings th{width:auto}
+  .findings th,.findings td{display:block;width:100%}
+  .findings th{border-bottom:0;padding-bottom:2px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <strong>Megha V Gowda</strong>
+    <nav aria-label="Page sections">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#findings">Findings</a>
+      <a href="#recommendations">Recommendations</a>
+      <a href="#links">Links</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Employees working overtime left at nearly three times the rate of everyone else</h1>
+    <p class="lead">I built an Excel dashboard to find out who is leaving a company of 1,470 employees, and where HR should look first.</p>
+
+    <div class="compare" role="img" aria-label="Bar chart: 10.4% attrition without overtime, 30.5% with overtime">
+      <h2>Attrition rate by overtime</h2>
+      <div class="row"><span>No overtime</span><div class="bar no">10.4%</div></div>
+      <div class="row"><span>Works overtime</span><div class="bar yes">30.5%</div></div>
+    </div>
+
+    <div class="meta">
+      <span><b>Tools:</b> Excel, PivotTables, PivotCharts, slicers</span>
+      <span><b>Data:</b> IBM HR Analytics, 1,470 employees</span>
+    </div>
+
+    <div class="btns">
+      <a class="btn primary" href="https://github.com/meghagowda812/hr-attrition-dashboard">View on GitHub</a>
+      <a class="btn ghost" href="https://github.com/meghagowda812/hr-attrition-dashboard/blob/main/HR_Attrition_Dashboard_Portfolio.xlsx">Download the workbook</a>
+    </div>
+  </div>
+
+  <section id="dashboard">
+    <h2>The dashboard</h2>
+    <figure class="shot">
+      <a href="images/dashboard.jpg"><img src="images/dashboard.jpg" alt="HR Attrition Dashboard with KPI cards, 11 charts, slicers, key insights and recommendations"></a>
+      <figcaption>Select the image to open it full size. It includes KPI cards, 11 charts, slicers for department, job role, gender, marital status and overtime, and a recommendations section.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="two">
+      <div class="prose">
+        <h2>The question</h2>
+        <p>Which groups of employees are leaving the most, and where should HR focus retention efforts?</p>
+      </div>
+      <div class="prose">
+        <h2>What I did</h2>
+        <p>I added an attrition flag, salary quartiles, and tenure and age bands to the data. I then built PivotTables to compare attrition across department, job role, overtime, tenure, salary, job satisfaction, age, gender and marital status, and combined them into one interactive dashboard.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="findings">
+    <h2>Key findings</h2>
+    <table class="findings">
+      <tbody>
+        <tr><th scope="row">Overall</th><td><span class="n">16.1%</span> attrition: 237 of 1,470 employees left.</td></tr>
+        <tr><th scope="row">Overtime</th><td><span class="n">30.5%</span> with overtime vs 10.4% without, about 2.9 times higher.</td></tr>
+        <tr><th scope="row">Sales</th><td>Highest department at <span class="n">20.6%</span>. Sales employees working overtime left at <span class="n">37.5%</span>.</td></tr>
+        <tr><th scope="row">Tenure</th><td>Employees with 0-4 years of service had the highest attrition by tenure: <span class="n">24.3%</span>.</td></tr>
+        <tr><th scope="row">Salary</th><td>The lowest salary quartile left at <span class="n">29.3%</span>, against 10.3% in the highest.</td></tr>
+        <tr><th scope="row">Job satisfaction</th><td>The lowest satisfaction score left at <span class="n">22.8%</span>, against 11.3% for the highest.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="recommendations">
+    <h2>What HR should do</h2>
+    <ol class="recs">
+      <li><strong>Review overtime and workload in Sales.</strong> Check sales targets, overtime pay and rest time.</li>
+      <li><strong>Strengthen onboarding and early-tenure support.</strong> Add structured check-ins in the first one to two years.</li>
+      <li><strong>Review pay and progression for the lowest salary band.</strong> Look at salary competitiveness, promotion paths and raises.</li>
+      <li><strong>Monitor job satisfaction.</strong> Use pulse surveys to catch problems early.</li>
+      <li><strong>Pilot retention actions with Sales Representatives,</strong> the role with the highest attrition.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>What I learned</h2>
+    <div class="note">
+      <p style="margin:0 0 10px">These results are patterns, not proven causes. The overtime, low-salary and early-tenure groups may overlap, and I compared them separately. The next step is to test how they interact, for example overtime attrition within each salary band.</p>
+      <p style="margin:0">I also learned how a chart axis can change how big a difference looks, which is why every bar chart on the dashboard starts at zero.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Skills used</h2>
+    <ul class="tags">
+      <li>PivotTables</li>
+      <li>PivotCharts</li>
+      <li>Slicers</li>
+      <li>Excel formulas</li>
+      <li>Data preparation</li>
+      <li>Dashboard design</li>
+      <li>Business recommendations</li>
+    </ul>
+  </section>
+
+</div>
+</main>
+
+<footer id="links">
+  <div class="wrap">
+    <p style="margin:0 0 6px"><strong>Megha V Gowda</strong></p>
+    <p style="margin:0">
+      <a href="https://www.linkedin.com/in/megha-gowda-93a274221/">LinkedIn</a> &nbsp;|&nbsp;
+      <a href="https://github.com/meghagowda812">GitHub</a> &nbsp;|&nbsp;
+      <a href="https://github.com/meghagowda812/hr-attrition-dashboard">Project repository</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
