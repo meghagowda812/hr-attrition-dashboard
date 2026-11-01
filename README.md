@@ -70,9 +70,9 @@ An interactive Excel dashboard analysing employee attrition in the IBM HR Analyt
 
 ## Files
 
-- `HR_Attrition_Dashboard.xlsx`: the full workbook (data, pivots, dashboard)
+- `HR_Attrition_Dashboard_Portfolio.xlsx`: the full workbook (data, pivots, dashboard)
 - `images/dashboard.png`: dashboard screenshot
 
 ## Author
 
-**[Your Name]**: [LinkedIn link] | [Portfolio link]
+**Megha V Gowda**: https://www.linkedin.com/in/megha-gowda-93a274221/ | https://github.com/meghagowda812/hr-attrition-dashboard
