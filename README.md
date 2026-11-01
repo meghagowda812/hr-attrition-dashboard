@@ -1,5 +1,7 @@
 # HR Attrition Dashboard (Excel)
 
+   **Live case study:** [meghagowda812.github.io/hr-attrition-dashboard](https://meghagowda812.github.io/hr-attrition-dashboard/)
+
 An interactive Excel dashboard analysing employee attrition in the IBM HR Analytics dataset (1,470 employees). It shows where attrition is highest and which areas HR should look at first.
 
 ![HR Attrition Dashboard](images/dashboard.jpg)
