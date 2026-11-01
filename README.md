@@ -71,7 +71,7 @@ An interactive Excel dashboard analysing employee attrition in the IBM HR Analyt
 ## Files
 
 - `HR_Attrition_Dashboard_Portfolio.xlsx`: the full workbook (data, pivots, dashboard)
-- `images/dashboard.png`: dashboard screenshot
+- `images/dashboard.jpg`: dashboard screenshot
 
 ## Author
 
